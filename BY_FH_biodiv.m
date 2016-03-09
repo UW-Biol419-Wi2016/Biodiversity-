@@ -7,10 +7,16 @@
 cnt = cnt(2:end, 1);
 
 [num, txt, raw12]= xlsread('2012 data\layers\hab_health.csv');
-[hab12, txt12] = habitatRead(num, txt);
+[hab12, htx12] = habitatRead(num, txt);
 
 [num, txt, raw13]= xlsread('2013 data\layers\hab_health.csv');
-[hab13, txt13] = habitatRead(num, txt);
+[hab13, htx13] = habitatRead(num, txt);
+
+[num, txt] = xlsread('2012 data\layers\hab_extent.csv');
+[extent12, etx12] = habitatRead(num, txt);
+
+[num, txt] = xlsread('2013 data\layers\hab_extent.csv');
+[extent13, etx13] = habitatRead(num, txt);
 
 %% Look at data
 % this first figure just looks at the distribution of habitats
@@ -18,13 +24,12 @@ figure;
 hold on;
 
 subplot(2,1,1);
-histogram(categorical(txt12));
+histogram(categorical(htx12));
 title('Habitat Distribution of 2012');
 
 subplot(2,1,2);
-histogram(categorical(txt13));
+histogram(categorical(htx13));
 title('Habitat Distribution of 2013');
-
 
 % the second graph compares the relative healths of the habitats
 % the marks are colored based on region
@@ -94,47 +99,56 @@ end;
 % normalize the habitat indices
 for i = 1:numel(habCount)
     workingSet = find(strcmp(habCount(i),htx12));
-    habitat12(workingSet, 2) = i;
+    hab12(workingSet, 2) = i;
     
     workingSet = find(strcmp(habCount(i),etx12));
     extent12(workingSet, 2) = i;
     
     workingSet = find(strcmp(habCount(i),htx13));
-    habitat12(workingSet, 2) = i;
+    hab13(workingSet, 2) = i;
     
     workingSet = find(strcmp(habCount(i),etx13));
     extent13(workingSet, 2) = i;
 end;
 %% view habitat health vs extent change in region
 
+% plots the health of habitats colored by region
 figure;
 hold on;
-scatter(habitat12(:,2), habitat12(:,3), 10, habitat12(:,1), 'o');
-scatter(habitat13(:,2), habitat13(:,3), 10, habitat13(:,1), '.');
+scatter(hab12(:,2), hab12(:,3), 10, hab12(:,1), 'o');
+scatter(hab13(:,2), hab13(:,3), 10, hab13(:,1), '.');
 
+% creates separate plots to look at the relative change in health and
+% extent for each environment from 2012 to 2013
 for i = 1:numel(habCount)
     figure;
     hold on;
-    doit = find(habitat12(:,2) == i);
+    doit = find(hab12(:,2) == i);
     
+    % not all of the habitats have health data
     if numel(doit) > 0
+        % put the two plots next to each other
         subplot(1,2,1);
         hold on;
-        plot([0,1], [0,1], 'r');
-        scatter(habitat12(doit,3), habitat13(doit,3));
+        plot([0,1], [0,1]); % line indicating no change
+        scatter(hab12(doit,3), hab13(doit,3), 'r.');
         
         title(strcat('Health change of: ',habCount(i)));
         xlabel('2012 health');
         ylabel('2013 health');
         
+        % will place extent change next to health
         subplot(1,2,2);
         hold on;
     end;
-    plot([0,.5], [0,.5], 'r');
     
+    % plot the relative change in extent from 2012 to 2013
     doit = find(extent12(:,2) == i);
     ex12tot = sum(extent12(doit,3));
-    scatter(extent12(doit,3) / ex12tot, extent13(doit,3) / ex12tot);
+    maxPlotting = max(extent13(doit,3) / ex12tot);
+    
+    plot([0,maxPlotting], [0,maxPlotting]); % no change
+    scatter(extent12(doit,3) / ex12tot, extent13(doit,3) / ex12tot, 'r.');
     
     title(strcat('Extent change of: ', habCount(i)));
     xlabel('2012 extent (% 2012)');
