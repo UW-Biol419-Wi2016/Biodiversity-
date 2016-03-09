@@ -72,3 +72,71 @@ scatter(trend12(:,3),trend13(:,3));
 xlabel('Trend 2012')
 ylabel('Trend 2013')
 title('Habitat Trends by Region')
+
+%% Correlating environment
+
+% grab the largest number of habitats at once
+if numel(unique(htx12)) > numel(unique(etx12))
+    habCount = unique(htx12);
+    othHab = unique(etx12);
+else
+    habCount = unique(etx12);
+    othHab = unique(htx12);
+end;
+
+% ensure that you have all of the habitats
+for i = 1:numel(othHab)
+    if find(strcmp(habCount, othHab(i))) == []
+        habCount = {habCount; othHab(i)};
+    end;
+end;
+
+% normalize the habitat indices
+for i = 1:numel(habCount)
+    workingSet = find(strcmp(habCount(i),htx12));
+    habitat12(workingSet, 2) = i;
+    
+    workingSet = find(strcmp(habCount(i),etx12));
+    extent12(workingSet, 2) = i;
+    
+    workingSet = find(strcmp(habCount(i),htx13));
+    habitat12(workingSet, 2) = i;
+    
+    workingSet = find(strcmp(habCount(i),etx13));
+    extent13(workingSet, 2) = i;
+end;
+%% view habitat health vs extent change in region
+
+figure;
+hold on;
+scatter(habitat12(:,2), habitat12(:,3), 10, habitat12(:,1), 'o');
+scatter(habitat13(:,2), habitat13(:,3), 10, habitat13(:,1), '.');
+
+for i = 1:numel(habCount)
+    figure;
+    hold on;
+    doit = find(habitat12(:,2) == i);
+    
+    if numel(doit) > 0
+        subplot(1,2,1);
+        hold on;
+        plot([0,1], [0,1], 'r');
+        scatter(habitat12(doit,3), habitat13(doit,3));
+        
+        title(strcat('Health change of: ',habCount(i)));
+        xlabel('2012 health');
+        ylabel('2013 health');
+        
+        subplot(1,2,2);
+        hold on;
+    end;
+    plot([0,.5], [0,.5], 'r');
+    
+    doit = find(extent12(:,2) == i);
+    ex12tot = sum(extent12(doit,3));
+    scatter(extent12(doit,3) / ex12tot, extent13(doit,3) / ex12tot);
+    
+    title(strcat('Extent change of: ', habCount(i)));
+    xlabel('2012 extent (% 2012)');
+    ylabel('2013 extent (% 2012)');
+end;
