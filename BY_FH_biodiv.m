@@ -18,6 +18,39 @@ cnt = cnt(2:end, 1);
 [num, txt] = xlsread('2013 data\layers\hab_extent.csv');
 [extent13, etx13] = habitatRead(num, txt);
 
+%% Correlating environment
+
+% grab the largest number of habitats at once
+if numel(unique(htx12)) > numel(unique(etx12))
+    habCount = unique(htx12);
+    othHab = unique(etx12);
+else
+    habCount = unique(etx12);
+    othHab = unique(htx12);
+end;
+
+% ensure that you have all of the habitats
+for i = 1:numel(othHab)
+    if find(strcmp(habCount, othHab(i))) == []
+        habCount = {habCount; othHab(i)};
+    end;
+end;
+
+% normalize the habitat indices
+for i = 1:numel(habCount)
+    workingSet = find(strcmp(habCount(i),htx12));
+    hab12(workingSet, 2) = i;
+    
+    workingSet = find(strcmp(habCount(i),etx12));
+    extent12(workingSet, 2) = i;
+    
+    workingSet = find(strcmp(habCount(i),htx13));
+    hab13(workingSet, 2) = i;
+    
+    workingSet = find(strcmp(habCount(i),etx13));
+    extent13(workingSet, 2) = i;
+end;
+
 %% Look at data
 % this first figure just looks at the distribution of habitats
 figure;
@@ -78,38 +111,6 @@ xlabel('Trend 2012')
 ylabel('Trend 2013')
 title('Habitat Trends by Region')
 
-%% Correlating environment
-
-% grab the largest number of habitats at once
-if numel(unique(htx12)) > numel(unique(etx12))
-    habCount = unique(htx12);
-    othHab = unique(etx12);
-else
-    habCount = unique(etx12);
-    othHab = unique(htx12);
-end;
-
-% ensure that you have all of the habitats
-for i = 1:numel(othHab)
-    if find(strcmp(habCount, othHab(i))) == []
-        habCount = {habCount; othHab(i)};
-    end;
-end;
-
-% normalize the habitat indices
-for i = 1:numel(habCount)
-    workingSet = find(strcmp(habCount(i),htx12));
-    hab12(workingSet, 2) = i;
-    
-    workingSet = find(strcmp(habCount(i),etx12));
-    extent12(workingSet, 2) = i;
-    
-    workingSet = find(strcmp(habCount(i),htx13));
-    hab13(workingSet, 2) = i;
-    
-    workingSet = find(strcmp(habCount(i),etx13));
-    extent13(workingSet, 2) = i;
-end;
 %% view habitat health vs extent change in region
 
 % plots the health of habitats colored by region
