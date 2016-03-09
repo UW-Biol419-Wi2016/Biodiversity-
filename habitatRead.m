@@ -4,6 +4,9 @@
 function [num,txt] = habitatRead(num, txt)
 
 txt = txt(2:end, 2);
+for i = 1:numel(txt)
+    txt(i) = strrep(txt(i), '_', '-');
+end;
 
 % Create a numerial classification of differnet habitats
 habs = unique(txt);
