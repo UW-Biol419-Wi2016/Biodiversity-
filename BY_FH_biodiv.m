@@ -25,6 +25,7 @@ subplot(2,1,2);
 histogram(categorical(txt13));
 title('Habitat Distribution of 2013');
 
+
 % the second graph compares the relative healths of the habitats
 % the marks are colored based on region
 figure;
@@ -47,3 +48,27 @@ plot(hab12(:,3), hab13(:,3), 'r.');
 title('Change in Habitat Healths from 2012 to 2013');
 xlabel('2012 Habitat Health');
 ylabel('2013 Habitat Health');
+
+%% Correlate the data 
+%Bonita
+
+% To look at the correlation between the habitat health scores
+figure;
+scatter(hab12(:,3), hab13(:,3));
+xlabel('Health Scores 2012')
+ylabel('Health Scores 2013')
+title('Habitat Health Scores by Region')
+
+%% To look at the correlation between habitat trend 
+
+[num12, txt12t, rawtrend12] = xlsread('2012 data\layers\hab_trend.csv');
+[num13, txt13t, rawtrend13] = xlsread('2013 data\layers\hab_trend13.csv');
+
+[trend12,txttrend12] = habitatRead(num12, txt12t);
+[trend13,txttrend13] = habitatRead(num13, txt13t);
+
+figure;
+scatter(trend12(:,3),trend13(:,3));
+xlabel('Trend 2012')
+ylabel('Trend 2013')
+title('Habitat Trends by Region')
