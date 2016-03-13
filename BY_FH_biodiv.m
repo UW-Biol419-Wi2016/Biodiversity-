@@ -83,4 +83,14 @@ plot(speciesdiversity(:,2), speciesdiversity13(:,2))
 
 correlation = corr(speciesdiversity(:,2), speciesdiversity13(:,2));
 
+%% Correlation between species status
 
+% import data species status (12 and 13) as numerical matrix
+
+sppstatus_corr = corr(sppstatus12(:,2), sppstatus13(:,2));
+
+figure;
+plot(sppstatus12(:,2), sppstatus13(:,2));
+xlabel('2012')
+ylabel('2013')
+title('Species Status by region')
