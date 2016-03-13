@@ -59,6 +59,8 @@ xlabel('Health Scores 2012')
 ylabel('Health Scores 2013')
 title('Habitat Health Scores by Region')
 
+habscore_corr = corr(hab12(:,3), hab13(:,3));
+
 %% To look at the correlation between habitat trend 
 
 [num12, txt12t, rawtrend12] = xlsread('2012 data\layers\hab_trend.csv');
@@ -72,3 +74,13 @@ scatter(trend12(:,3),trend13(:,3));
 xlabel('Trend 2012')
 ylabel('Trend 2013')
 title('Habitat Trends by Region')
+
+trend_corr = corr(trend12(:,3),trend13(:,3));
+
+% correlation between species diversity
+figure;
+plot(speciesdiversity(:,2), speciesdiversity13(:,2))
+
+correlation = corr(speciesdiversity(:,2), speciesdiversity13(:,2));
+
+
