@@ -253,6 +253,9 @@ correlation = corr(speciesdiversity12(:,2), speciesdiversity13(:,2));
 
 % import data species status (12 and 13) as numerical matrix
 
+sppstatus12 = xlsread('2012 data\layers\spp_status.csv');
+sppstatus13 = xlsread('2012 data\layers\spp_status.csv');
+
 sppstatus_corr = corr(sppstatus12(:,2), sppstatus13(:,2));
 
 figure;
