@@ -237,10 +237,14 @@ title('Habitat Trends by Region')
 trend_corr = corr(trend12(:,3),trend13(:,3));
 
 % correlation between species diversity
-figure;
-plot(speciesdiversity(:,2), speciesdiversity13(:,2))
 
-correlation = corr(speciesdiversity(:,2), speciesdiversity13(:,2));
+speciesdiversity12 = xlsread('2012 data\layers\species_diversity.csv');
+speciesdiversity13 = xlsread('2013 data\layers\species_diversity.csv');
+
+figure;
+plot(speciesdiversity12(:,2), speciesdiversity13(:,2));
+
+correlation = corr(speciesdiversity12(:,2), speciesdiversity13(:,2));
 
 %% Correlation between species status
 
