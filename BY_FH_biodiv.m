@@ -3,13 +3,16 @@
 % March 2016
 
 %% Setup data
-[rID, cnt, rawC] = xlsread('2012 data\layers\cntry_rgn.csv');
+[rID, cnt] = xlsread('2012 data\layers\rgn_global.csv');
 cnt = cnt(2:end, 1);
 
-[num, txt, raw12]= xlsread('2012 data\layers\hab_health.csv');
+rArea12 = xlsread('2012 data\layers\rgn_area.csv');
+rArea13 = xlsread('2013 data\layers\rgn_area.csv');
+
+[num, txt]= xlsread('2012 data\layers\hab_health.csv');
 [hab12, txt12] = habitatRead(num, txt);
 
-[num, txt, raw13]= xlsread('2013 data\layers\hab_health.csv');
+[num, txt]= xlsread('2013 data\layers\hab_health.csv');
 [hab13, txt13] = habitatRead(num, txt);
 
 %% Look at data
