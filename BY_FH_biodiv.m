@@ -243,6 +243,9 @@ speciesdiversity13 = xlsread('2013 data\layers\species_diversity.csv');
 
 figure;
 plot(speciesdiversity12(:,2), speciesdiversity13(:,2));
+xlabel('2012')
+ylabel('2013')
+title('Species Diversity by region')
 
 correlation = corr(speciesdiversity12(:,2), speciesdiversity13(:,2));
 
